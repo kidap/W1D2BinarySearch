@@ -14,5 +14,6 @@
 @property (nonatomic, strong) BinaryTreeNode *leftChild;
 @property (nonatomic, strong) BinaryTreeNode *rightChild;
 @property (nonatomic, strong) BinaryTreeNode *parent;
+@property int originalIndex;
 
 @end

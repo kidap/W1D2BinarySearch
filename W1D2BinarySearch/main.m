@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BinarySearchTree.h"
 
 //-----------------------------------------------------
 // Binary search Part 1
@@ -53,8 +54,21 @@ int main(int argc, const char * argv[]) {
     resultArray = searchNumber(sortedArray, findNumber);
     
     //Print out
-    NSLog(@"The index of the number %d is %@", findNumber, resultArray );
+    //NSLog(@"The index of the number %d is %@", findNumber, resultArray );
     
+    
+    //-----------------------------------------------------
+    // Binary search Part 2
+    //-----------------------------------------------------
+    
+    BinarySearchTree *searchTree = [[BinarySearchTree alloc] initWithObject:@2];
+    [searchTree insertObject:@3];
+    [searchTree insertObject:@3];
+    [searchTree insertObject:@5];
+    [searchTree insertObject:@6];
+    [searchTree insertObject:@6];
+    
+    [searchTree find:@3];
     
   }
     return 0;
