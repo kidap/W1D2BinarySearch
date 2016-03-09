@@ -42,10 +42,11 @@ NSMutableArray *searchNumber(NSArray *array, int findNumber){
 
 int main(int argc, const char * argv[]) {
   @autoreleasepool {
-
+    
     //-----------------------------------------------------
     // Binary search Part 1
     //-----------------------------------------------------
+    NSLog(@"Binary Search Part 1");
     NSArray *sortedArray = @[@2, @3, @3, @5, @6, @6];
     NSMutableArray * resultArray = [[NSMutableArray alloc] init];
     int findNumber = 3;
@@ -54,13 +55,14 @@ int main(int argc, const char * argv[]) {
     resultArray = searchNumber(sortedArray, findNumber);
     
     //Print out
-    //NSLog(@"The index of the number %d is %@", findNumber, resultArray );
+    NSLog(@"The index of the number %d is %@", findNumber, resultArray );
     
     
     //-----------------------------------------------------
     // Binary search Part 2
     //-----------------------------------------------------
     
+    NSLog(@"Binary Search Part 2");
     BinarySearchTree *searchTree = [[BinarySearchTree alloc] initWithObject:@2];
     [searchTree insertObject:@3];
     [searchTree insertObject:@3];
@@ -68,9 +70,33 @@ int main(int argc, const char * argv[]) {
     [searchTree insertObject:@6];
     [searchTree insertObject:@6];
     
-    [searchTree find:@3];
+    BinaryTreeNode *nodeFound = [[BinaryTreeNode alloc] init];
+    nodeFound = [searchTree find:@3];
+    //NSLog(@"The original index is %d", nodeFound.originalIndex);
+    
+    NSMutableArray *nodesFound = [[NSMutableArray alloc] init];
+    nodesFound = [searchTree findNodes:@3];
+    
+    for (BinaryTreeNode *nodeFound in nodesFound){
+      NSNumber *tmpNumber = (NSNumber *)nodeFound.object;
+      NSLog(@"Value of node is %d with index %d", [tmpNumber intValue], nodeFound.originalIndex);
+    }
+    
+    [searchTree deleteObject:@5];
+    
+    nodesFound = [searchTree findNodes:@5];
+    
+    if (nodesFound == nil){
+      NSLog(@"Object was not found");
+    } else{
+      for (BinaryTreeNode *nodeFound in nodesFound){
+        NSNumber *tmpNumber = (NSNumber *)nodeFound.object;
+        NSLog(@"Value of node is %d with index %d", [tmpNumber intValue], nodeFound.originalIndex);
+      }
+    }
+    
     
   }
-    return 0;
+  return 0;
 }
 

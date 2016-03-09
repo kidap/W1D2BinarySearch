@@ -18,5 +18,7 @@
 -(BinaryTreeNode *)find:(NSObject *) object;
 -(BinaryTreeNode *)deleteObject:(NSObject *) object;
 
+//Additional methods
+-(NSMutableArray *)findNodes:(NSObject *) object;
 
 @end

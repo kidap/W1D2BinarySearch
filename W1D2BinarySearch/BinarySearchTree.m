@@ -65,7 +65,7 @@
       }
     }
   }
-
+  
 }
 
 -(BinaryTreeNode *)find:(NSObject *) object{
@@ -79,7 +79,7 @@
   currentNode = self.root;
   
   //Traverse the tree
-  while (nodeNotFound){
+  while (nodeNotFound && currentNode != nil){
     NSNumber *currentNodeNumber = (NSNumber *)currentNode.object;
     NSNumber *nodeToFindNumber = (NSNumber *)nodeToFind.object;
     
@@ -106,12 +106,108 @@
       }
     }
   }
-
+  
   return [[BinaryTreeNode alloc] init];
   
 }
+-(NSMutableArray *)findNodes:(NSObject *) object{
+  NSMutableArray * resultArray = [[NSMutableArray alloc] init];
+  
+  //Initialize variable
+  bool nodeNotFound = YES;
+  bool foundOne = NO;
+  BinaryTreeNode *currentNode = [[BinaryTreeNode alloc] init];
+  BinaryTreeNode *nodeToFind = [[BinaryTreeNode alloc] init];
+  nodeToFind.object = object;
+  
+  //Start from root node
+  currentNode = self.root;
+  
+  //Traverse the tree
+  while (nodeNotFound && currentNode != nil){
+    NSNumber *currentNodeNumber = (NSNumber *)currentNode.object;
+    NSNumber *nodeToFindNumber = (NSNumber *)nodeToFind.object;
+    
+    //If number is found, return the node
+    if ([nodeToFindNumber isEqualToNumber:currentNodeNumber]){
+      [resultArray addObject: currentNode];
+      foundOne = YES; //Flag to denote at least one node has been found
+      if (currentNode.leftChild == nil){
+        return resultArray;
+      } else{
+        currentNode = currentNode.leftChild; //Continue search the left side
+      }
+      
+    } else if ([nodeToFindNumber isGreaterThan:currentNodeNumber]){
+      //If number is greater, go to the right side
+      //Add to the right node if empty. Else, traverse down
+      if (currentNode.rightChild == nil){
+        nodeNotFound = NO;
+      } else {
+        currentNode = currentNode.rightChild;
+      }
+    } else if ([nodeToFindNumber isLessThan:currentNodeNumber]){
+      if (foundOne == YES){
+        //Stop when don't find a match after finding a match in the previous level
+        return resultArray;
+      }
+      //If number is lesser, go to the left side
+      //Add to the left node if empty. Else, traverse down
+      if (currentNode.leftChild == nil){
+        nodeNotFound = NO;
+      } else {
+        currentNode = currentNode.leftChild;
+      }
+    } else{
+      
+    }
+  }
+  
+  return [[NSMutableArray alloc] init];
+  
+}
+
 -(BinaryTreeNode *)deleteObject:(NSObject *) object{
-  numberOfNodes--;
+  BinaryTreeNode *nodeToDelete = [[BinaryTreeNode alloc] init];
+  BinaryTreeNode *parentNode = [[BinaryTreeNode alloc] init];
+  BinaryTreeNode *leftChild = [[BinaryTreeNode alloc] init];
+  BinaryTreeNode *rightChild = [[BinaryTreeNode alloc] init];
+  
+  nodeToDelete = [self find:object];
+  leftChild = nodeToDelete.leftChild;
+  rightChild = nodeToDelete.rightChild;
+  parentNode = nodeToDelete.parent;
+  
+  if (nodeToDelete != nil){
+    //If there is only a right Child
+    if(leftChild == nil && rightChild != nil){
+      if (parentNode.leftChild == nodeToDelete){
+        //Assign the node to the parent
+        parentNode.leftChild = rightChild;
+        rightChild.parent = parentNode;
+        numberOfNodes--;
+      } else {
+        parentNode.rightChild = rightChild;
+        rightChild.parent = parentNode;
+        numberOfNodes--;
+      }
+    } else if(leftChild != nil && rightChild == nil){
+      //If there is only a left Child
+      //Assign the node to the parent
+      if (parentNode.leftChild == nodeToDelete){
+        parentNode.leftChild = leftChild;
+        leftChild.parent = parentNode;
+        numberOfNodes--;
+      } else {
+        parentNode.rightChild = leftChild;
+        leftChild.parent = parentNode;
+        numberOfNodes--;
+      }
+    } else{
+      //How to select which node to move up?
+    }
+    
+  }
   
   return [[BinaryTreeNode alloc] init];
 }
